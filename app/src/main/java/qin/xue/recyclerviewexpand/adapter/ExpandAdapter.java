@@ -83,32 +83,34 @@ public class ExpandAdapter extends RecyclerView.Adapter<ExpandBaseViewHolder> im
     public void onOutItemClick(ExpandBeanOut expandBeanOut, int position, boolean isExpand) {
         ModuleOut moduleOut = (ModuleOut) modules.get(position);
         moduleOut.setExpand(!isExpand);
-        if (moduleOut.getId() == currentId || currentId == -1) {
-            if (moduleOut.isExpand()) {
-                currentExpand = getCurrentModuleInList(position);
-                currentId = moduleOut.getId();
-                modules.addAll(position + 1, currentExpand);
-                notifyItemRangeInserted(position + 1, currentExpand.size());
-                lastPosition = position;
-            } else {
-                modules.removeAll(currentExpand);
-                notifyItemRangeRemoved(lastPosition, currentExpand.size());
-                currentExpand = null;
-                lastPosition = -1;
-                currentId = -1;
-            }
-        } else {
-            modules.removeAll(currentExpand);
-            notifyItemRangeRemoved(lastPosition, currentExpand.size());
-            if (position > lastPosition) {
-                position -= currentExpand.size();
-            }
+        if (currentExpand == null) {
             currentExpand = getCurrentModuleInList(position);
+            currentId = moduleOut.getId();
             modules.addAll(position + 1, currentExpand);
             notifyItemRangeInserted(position + 1, currentExpand.size());
             lastPosition = position;
+        } else {
+            if (moduleOut.getId() == currentId) {
+                //点击自己
+                modules.removeAll(currentExpand);
+                notifyItemRangeRemoved(position + 1, currentExpand.size());
+                currentExpand = null;
+            } else {
+                //切换别人
+                currentId = moduleOut.getId();
+                modules.removeAll(currentExpand);
+                notifyItemRangeRemoved(lastPosition + 1, currentExpand.size());
+                if (position > lastPosition) {
+                    position -= currentExpand.size();
+                }
+                currentExpand = getCurrentModuleInList(position + 1);
+                modules.addAll(position + 1, currentExpand);
+                notifyItemRangeInserted(position + 1, currentExpand.size());
+                lastPosition = position;
+            }
         }
     }
+
 
     @Override
     public void onInItemClick(ExpandBeanIn beanIn) {

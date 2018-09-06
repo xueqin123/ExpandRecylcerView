@@ -7,7 +7,7 @@ import qin.xue.recyclerviewexpand.beans.ExpandBeanOut;
  */
 
 public class ModuleOut extends BaseModule<ExpandBeanOut> {
-    private boolean isExpand;
+    private boolean isExpand = false;
     private int id;
 
     public ModuleOut(ExpandBeanOut value, int id) {
