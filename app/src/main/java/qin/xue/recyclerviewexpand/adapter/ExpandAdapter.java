@@ -34,6 +34,7 @@ public class ExpandAdapter extends RecyclerView.Adapter<ExpandBaseViewHolder> im
     private List<ModuleIn> currentExpand;
     private int lastPosition = -1;
     private int currentId = -1;
+    private boolean isClicked = false;
 
     public ExpandAdapter(List<BaseModule> list, Context context) {
         modules = list;
@@ -78,6 +79,7 @@ public class ExpandAdapter extends RecyclerView.Adapter<ExpandBaseViewHolder> im
     public int getItemViewType(int position) {
         return modules.get(position).getType();
     }
+
 
     @Override
     public void onOutItemClick(ExpandBeanOut expandBeanOut, int position, boolean isExpand) {

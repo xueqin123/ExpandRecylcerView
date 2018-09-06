@@ -18,6 +18,7 @@ public class ExpandOutViewHolder extends ExpandBaseViewHolder<ModuleOut> {
     private OutItemClickListener outItemClickListener;
     private ExpandBeanOut expandBeanOut;
     private ModuleOut moduleOut;
+    private boolean isClicked;
 
     public ExpandOutViewHolder(View itemView) {
         super(itemView);
@@ -36,9 +37,21 @@ public class ExpandOutViewHolder extends ExpandBaseViewHolder<ModuleOut> {
         this.outItemClickListener = outItemClickListener;
     }
 
+
+    private Runnable mRunnable = new Runnable() {
+        @Override
+        public void run() {
+            isClicked = false;
+        }
+    };
+
     @Override
     public void onClick(View v) {
         super.onClick(v);
+        if (isClicked)
+            return;
+        isClicked = true;
+        v.postDelayed(mRunnable, 500); // 防止点击过快
         if (outItemClickListener != null) {
             outItemClickListener.onOutItemClick(expandBeanOut, getAdapterPosition(), moduleOut.isExpand());
         }
